@@ -1,4 +1,4 @@
-PATH_TO_WS=($HOME/workspaces/squidrc-ros/rc_ws)
+PATH_TO_WS=($HOME/workspaces/squidrc-ros)
 
-CONFIG_IMAGE_KEY="humble.nav2.realsense.squid.user"
+CONFIG_IMAGE_KEY="humble.nav2.realsense.user.squid"
 CONFIG_DOCKER_SEARCH_DIRS=$PATH_TO_WS
