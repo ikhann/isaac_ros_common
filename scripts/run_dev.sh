@@ -170,6 +170,7 @@ docker run -it --rm \
     --privileged \
     --network host \
     ${DOCKER_ARGS[@]} \
+    -v /run/udev:/run/udev:ro \
     -v /dev/*:/dev/* \
     --name "$CONTAINER_NAME" \
     --runtime nvidia \
