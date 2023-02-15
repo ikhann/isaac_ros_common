@@ -181,6 +181,7 @@ docker run -it --rm \
     --privileged \
     --network host \
     ${DOCKER_ARGS[@]} \
+    -v /run/udev:/run/udev:ro \
     -v /dev/*:/dev/* \
     -v /etc/localtime:/etc/localtime:ro \
     --name "$CONTAINER_NAME" \
