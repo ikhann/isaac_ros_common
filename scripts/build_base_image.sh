@@ -28,12 +28,6 @@ if [[ -f "${ROOT}/.isaac_ros_common-config" ]]; then
 
     # Prepend configured docker search dirs
     if [ ${#CONFIG_DOCKER_SEARCH_DIRS[@]} -gt 0 ]; then
-        for (( i=${#CONFIG_DOCKER_SEARCH_DIRS[@]}-1 ; i>=0 ; i-- )); do
-            if [[ "${CONFIG_DOCKER_SEARCH_DIRS[i]}" != '/*'* ]]; then
-                CONFIG_DOCKER_SEARCH_DIRS[$i]="${ROOT}/${CONFIG_DOCKER_SEARCH_DIRS[i]}"
-            fi
-        done
-
         CONFIG_DOCKER_SEARCH_DIRS+=(${DOCKER_SEARCH_DIRS[@]})
         DOCKER_SEARCH_DIRS=(${CONFIG_DOCKER_SEARCH_DIRS[@]})
 
@@ -68,7 +62,7 @@ if [[ -z "$DOCKER_CONTEXT_DIR" ]]; then
 fi
 shift 1
 
-DOCKER_BUILDKIT=1
+DOCKER_BUILDKIT=0
 DISABLE_BUILDKIT_STR="$1"
 if [[ ! -z "$DISABLE_BUILDKIT_STR" ]]; then
     print_warning "WARNING: Explicitly disabling BuildKit"
