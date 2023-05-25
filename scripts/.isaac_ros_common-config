@@ -1,4 +1,0 @@
-SQUID_WS="$(cd ../../../../; pwd)"
-
-CONFIG_IMAGE_KEY="ros2_humble.realsense.user.squid"
-CONFIG_DOCKER_SEARCH_DIRS=$SQUID_WS

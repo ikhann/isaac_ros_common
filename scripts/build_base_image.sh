@@ -23,6 +23,17 @@ DOCKER_SEARCH_DIRS=(${DOCKER_DIR})
 #
 # CONFIG_DOCKER_SEARCH_DIRS (array, can be empty)
 
+# If we run from custom script
+if [[ -n "$CONFIG_DOCKER_SEARCH_DIRS" ]]; then
+    # Prepend configured docker search dirs
+    if [ ${#CONFIG_DOCKER_SEARCH_DIRS[@]} -gt 0 ]; then
+        CONFIG_DOCKER_SEARCH_DIRS+=(${DOCKER_SEARCH_DIRS[@]})
+        DOCKER_SEARCH_DIRS=(${CONFIG_DOCKER_SEARCH_DIRS[@]})
+
+        print_info "Using configured docker search paths: ${DOCKER_SEARCH_DIRS[*]}"
+    fi
+fi
+
 if [[ -f "${ROOT}/.isaac_ros_common-config" ]]; then
     . "${ROOT}/.isaac_ros_common-config"
 
