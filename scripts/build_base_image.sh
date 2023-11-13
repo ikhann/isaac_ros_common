@@ -39,6 +39,14 @@ if [[ -f "${ROOT}/.isaac_ros_common-config" ]]; then
 
     # Prepend configured docker search dirs
     if [ ${#CONFIG_DOCKER_SEARCH_DIRS[@]} -gt 0 ]; then
+        for (( i=${#CONFIG_DOCKER_SEARCH_DIRS[@]}-1 ; i>=0 ; i-- )); do
+
+            # If the path is relative, then prefix ROOT to the path
+            if [[ "${CONFIG_DOCKER_SEARCH_DIRS[i]}" != /* ]]; then
+                CONFIG_DOCKER_SEARCH_DIRS[$i]="${ROOT}/${CONFIG_DOCKER_SEARCH_DIRS[i]}"
+            fi
+        done
+
         CONFIG_DOCKER_SEARCH_DIRS+=(${DOCKER_SEARCH_DIRS[@]})
         DOCKER_SEARCH_DIRS=(${CONFIG_DOCKER_SEARCH_DIRS[@]})
 
@@ -154,20 +162,6 @@ if [[ $PLATFORM == "x86_64" ]]; then
         fi
     fi
 fi
-
-if [[ "$PLATFORM" == "aarch64" ]]; then
-    # Make sure the nvidia docker runtime will be used for builds
-    DEFAULT_RUNTIME=$(docker info | grep "Default Runtime: nvidia" ; true)
-    if [[ -z "$DEFAULT_RUNTIME" ]]; then
-        print_error "Default docker runtime is not nvidia!, please make sure the following line is"
-        print_error "present in /etc/docker/daemon.json"
-        print_error '"default-runtime": "nvidia",'
-        print_error ""
-        print_error "And then restart the docker daemon"
-        exit 1
-    fi
-fi
-
 
 print_info "Resolved the following Dockerfiles for target image: ${TARGET_IMAGE_STR}"
 for DOCKERFILE in ${DOCKERFILES[@]}; do
