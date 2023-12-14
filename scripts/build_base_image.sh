@@ -13,7 +13,7 @@ source $ROOT/utils/print_color.sh
 DOCKER_DIR="${ROOT}/../docker"
 
 function usage() {
-    print_info "Usage: build_base_image.sh" {target image, period delimited components, required} {target image name, optional} {disable_build boolean, optional}
+    print_info "Usage: build_base_image.sh" {platform, target image, period delimited components, required} {target image name, optional} {disable_build boolean, optional}
     print_info "Copyright (c) 2022, NVIDIA CORPORATION."
 }
 
@@ -53,6 +53,14 @@ if [[ -f "${ROOT}/.isaac_ros_common-config" ]]; then
         print_info "Using configured docker search paths: ${DOCKER_SEARCH_DIRS[*]}"
     fi
 fi
+
+PLATFORM_TYPE="$1"
+if [[ "$PLATFORM_TYPE" == "aarch64" ]]; then
+    PLATFORM="aarch64"
+else
+    PLATFORM="$(uname -m)"
+fi
+shift 1
 
 TARGET_IMAGE_STR="$1"
 if [[ -z "$TARGET_IMAGE_STR" ]]; then
@@ -97,8 +105,6 @@ function cleanup {
     done
 }
 trap cleanup EXIT
-
-PLATFORM="$(uname -m)"
 
 # Resolve Dockerfiles by matching target image ids to available files
 TARGET_IMAGE_IDS=(${TARGET_IMAGE_STR//./ })

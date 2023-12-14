@@ -103,7 +103,12 @@ if [[ $? -eq 0 ]]; then
     done
 fi
 
-PLATFORM="$(uname -m)"
+PLATFORM_TYPE="$1"
+if [[ "$PLATFORM_TYPE" == "aarch64" ]]; then
+    PLATFORM="aarch64"
+else
+    PLATFORM="$(uname -m)"
+fi
 
 BASE_NAME="isaac_ros_dev-$PLATFORM"
 CONTAINER_NAME="$BASE_NAME-container"
@@ -138,7 +143,7 @@ if [[ ! -z "${IMAGE_KEY}" ]]; then
 fi
 
 print_info "Building $BASE_IMAGE_KEY base as image: $BASE_NAME using key $BASE_IMAGE_KEY"
-$ROOT/build_base_image.sh $BASE_IMAGE_KEY $BASE_NAME '' '' ''
+$ROOT/build_base_image.sh $PLATFORM $BASE_IMAGE_KEY $BASE_NAME '' '' ''
 
 if [ $? -ne 0 ]; then
     print_error "Failed to build base image: $BASE_NAME, aborting."
